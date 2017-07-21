@@ -1,0 +1,74 @@
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kids Zone</title>
+<style>
+body{
+margin: 0px 0px 0px 0px;
+}
+    .main{
+    	width: 40%;
+    	background:rgba(255,255,255,0.8);
+    	position: relative;
+    	 height:100vh;
+    	 float: right;
+    	 margin: 0px 0px 0px 0px;
+ 
+    	text-align: center;
+
+    }
+  
+
+   h1{
+    font-family:  sans-serif;
+  font-weight: 30;
+  font-size: 50px ;
+  margin: 50px 0px 80px 0px;
+    }
+
+    #submit{
+    background-color:#33B5FF;
+ 	border-radius: 5px;
+    color:white;
+    border:None;
+    }
+    input{
+    margin: 15px 0px 15px 0px;
+
+    width:200px;
+    height:30px;
+    }
+    body{
+
+    background-image: url("{% static "e1.jpg" %}");
+    background-size: cover;
+    background-position:center;
+    }
+    a{
+    color:#33B5FF;
+
+    }
+
+
+</style>
+</head>
+<body>
+<div class="main">
+<h1>Kids Zone</h1>
+<form method="post">
+{% csrf_token %}
+<input type="text" placeholder="Full Name" name="name" value={{name}}><br>
+<input type="text" placeholder="Username" name="username" value={{username}} ><br>
+<input type="email" placeholder="Email" name="email" value={{email}}><br>
+<input type="email" placeholder="Parent-Email" name="parentmail" value={{pamail}}><br>
+<input type="password" placeholder="Password" name="password" value={{password}} ><br>
+<input  id ="submit" type="submit" value="Sign Up"><br>
+<a href={% url 'login' %}>Login</a>
+    </form>
+    </div>
+
+
+
+</body>
+</html>

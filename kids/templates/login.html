@@ -1,0 +1,23 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<link rel="stylesheet" href="{% static 'css/loginstyle.css' %}">
+</head>
+<body>
+<div class="login-page">
+  <div class="form">
+
+    <form  method="post" class="login-form">
+        {% csrf_token %}
+      <input type="text" placeholder="username" name="username" value={{username}}>
+      <input type="password" placeholder="password" name="password" value={{password}}>
+      <input id ="button" type="submit" value ="login">
+
+    </form>
+  </div>
+</div>
+
+</body>
+</html>

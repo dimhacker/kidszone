@@ -7,6 +7,7 @@ import uuid
 
 # Create your models here.
 class User(models.Model):
+
 	email = models.EmailField(default=None)
 	parentmail = models.EmailField(default=None)
 	name = models.CharField(max_length=120)

@@ -13,6 +13,9 @@
 <a href ="/post/">
 <input type="button" value="Create Post">
 </a>
+<a href={% url 'logout' %}>
+    <input type="button" value="LOGOUT" >
+</a>
 {% for post in posts %}
 <h2>Posted By:{{post.user.username}}</h2>
 <h3>{{post.user.created_on}}</h3>
@@ -39,7 +42,7 @@
                 <input type="submit" class="btn-default btn" value="Comment">
             </form>
         </div>
-            {% for comment in post.comments %}
+            {% for comment in post.comments.filter(since=since).order_by('-id')[:10][::-1] %}
                 <p><b>{{ comment.user.username }} [{{ comment.created_on }}]:</b> {{ comment.comment_text }}</p>
                 <br>
             {% endfor %}

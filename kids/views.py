@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from django.contrib.auth.hashers import make_password, check_password
 import sendgrid
+from keys import SENDGRID_API_KEY
 from sendgrid.helpers.mail import *
 from clarifai.rest import ClarifaiApp
 
@@ -13,8 +14,6 @@ from datetime import timedelta
 from django.utils import timezone
 from recent.settings import BASE_DIR
 from imgurpython import ImgurClient
-from paralleldots import abuse
-
 # Create your views here.
 def signup_view(request):
     if request.method == "POST":
@@ -107,6 +106,10 @@ def feed_view(request):
     else:
         return redirect('login')
 
+def logout_view(request):
+        cancel_validation(request)
+        return redirect('/login/')
+
 #
 # def like_view(request):
 #     user=check_validation(request)
@@ -128,19 +131,21 @@ def comment_view(request):
     if user and request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
-            post_id = form.cleaned_data.get('post')
+            username_of_post=form.cleaned_data.get('post')
+            post_id = form.cleaned_data.get('post').id
+            print post_id
             comment_text = form.cleaned_data.get('comment_text')
-
-            comment = CommentModel.objects.create(user=user, post=post_id, comment_text=comment_text)
+            comment = CommentModel.objects.create(user=user, post_id=post_id, comment_text=comment_text)
             comment.save()
+            post=PostModel.objects.get(id=post_id)
+            recipient_mail = post.user.email
             recipient_name=comment.user.username
-            recipient_mail=comment.user.email
             sending_mail(recipient_mail,content_text=recipient_name+" has commented on your post")
             return redirect('/feed/')
         else:
             return redirect('/feed/')
     else:
-        return redirect('/login')
+        return redirect('/login/')
 
 
 
@@ -153,9 +158,17 @@ def check_validation(request):
                 return session.user
     else:
         return None
+def cancel_validation(request):
+    if request.COOKIES.get('session_token'):
+        session = SessionToken.objects.filter(session_token=request.COOKIES.get('session_token')).first()
+        if session:
+            session.delete()
+        else:
+            pass
+
 
 def sending_mail(recipient_mail,content_text):
-    sg = sendgrid.SendGridAPIClient(apikey="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")
+    sg = sendgrid.SendGridAPIClient(apikey=SENDGRID_API_KEY)
     from_email = Email("kidssphere@gmail.com")
     to_email = Email(recipient_mail)
     subject = "Notification from Kids Zone, a social networking site for kids!!"

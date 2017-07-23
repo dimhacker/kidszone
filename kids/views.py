@@ -2,19 +2,24 @@
 from __future__ import unicode_literals
 from django.contrib.auth.hashers import make_password, check_password
 import sendgrid
-from keys import SENDGRID_API_KEY
+from keys import SENDGRID_API_KEY,CLARIFAI_API_KEY
 from sendgrid.helpers.mail import *
 from clarifai.rest import ClarifaiApp
 
 from django.shortcuts import render, redirect,get_list_or_404,get_object_or_404
-from forms import SignupForm, LoginForm, PostForm ,CommentForm
+from forms import SignupForm, LoginForm, PostForm ,LikeForm, CommentForm
 import uuid
-from models import User, SessionToken, PostModel ,LikeModel,CommentModel
+from models import User, SessionToken, PostModel, LikeModel,CommentModel
 from datetime import timedelta
 from django.utils import timezone
 from recent.settings import BASE_DIR
+from textblob import TextBlob
 from imgurpython import ImgurClient
+INAPPROPRIATE_WORDS=['arse','arsehole','ass','asshole','badass','bastard','beaver','bitch','bollock','bollocks','boner','bugger','bullshit','bum','cock','crap','creampie','cunt','dick','dickhead','dyke','fag','faggot','fart','fatass',
+'fuck','fucked','fucker','fucking','holy shit','jackass','jerk off','kick ass','kick-ass','kike','kikes','nigga','nigger','piss',
+'pissed','pizza nigger','shit','shittier','shittiest','shitty','son of a bitch','sons of bitches','STFU','suck','tit','trap','twat','wan']
 # Create your views here.
+
 def signup_view(request):
     if request.method == "POST":
         form = SignupForm(request.POST)
@@ -81,16 +86,22 @@ def post_view(request):
                 client = ImgurClient("6fc30e7f6bd87be", "0e21d82e47b11e66d7f6f3874cd269633c25c682")
                 post.image_url = client.upload_from_path(path, anon=True)['link']
                 post.save()
-                app = ClarifaiApp(api_key="a73ee15ab37446a897cdcbbce2286bf9")
+                app = ClarifaiApp(api_key=CLARIFAI_API_KEY)
                 model = app.models.get('nsfw-v1.0')
                 response = model.predict_by_url(url=post.image_url)
-                nudity_level=response['outputs'][0]['data']['concepts'][0]['value']
-                if nudity_level>=0.85:
-                    error_message="You are trying to post an inappropriate photo!!"
-                    post.delete()
-                    return render(request,"error.html",{'error_message':error_message})
-                else:
-                    return redirect('/feed/')
+                concepts_value=response['outputs'][0]['data']['concepts']
+                for i in concepts_value:
+                    if i['name']=='nsfw':
+                        nudity_level=i['value']
+
+                        if nudity_level>=0.85:
+                            print response['outputs'][0]['data']['concepts']
+                            print nudity_level
+                            post.delete()
+                            error_message="You are trying to post an inappropriate photo!!"
+                            return render(request,"error.html",{'error_message':error_message})
+                        else:
+                            return redirect('/feed/')
         else:
             form = PostForm()
 
@@ -100,8 +111,13 @@ def post_view(request):
 
 
 def feed_view(request):
-    if check_validation(request):
+    user=check_validation(request)
+    if user:
         posts = PostModel.objects.all().order_by('-created_on')
+        for post in posts:
+            existing_like = LikeModel.objects.filter(post_id=post.id, user=user).first()
+            if existing_like:
+                post.has_liked = True
         return render(request, "feed.html", {'posts': posts})
     else:
         return redirect('login')
@@ -110,38 +126,49 @@ def logout_view(request):
         cancel_validation(request)
         return redirect('/login/')
 
-#
-# def like_view(request):
-#     user=check_validation(request)
-#     if user:
-#         form = LikeForm(request.POST)
-#         post_id=form.cleaned_data.get('post').id
-#         existing_like=LikeModel.objects.all().filter(user=user,post_id=post_id).first()
-#         if existing_like:
-#
-#             existing_like.delete()
-#         else:
-#             LikeModel.create(user=user,post_id=post_id)
-#     else:
-#         form=LoginForm()
-#     return  render(request,'feed.html',{'form':form })
+
+def like_view(request):
+    user = check_validation(request)
+    if user and request.method == 'POST':
+        form = LikeForm(request.POST)
+
+        if form.is_valid():
+            post_id = form.cleaned_data.get('post').id
+            existing_like = LikeModel.objects.filter(post_id=post_id, user=user).first()
+            if not existing_like:
+                like=LikeModel.objects.create(post_id=post_id,user=user)
+                post=PostModel.objects.get(id=post_id)
+                content_text=like.user.username + " has just liked your post!"
+                recipient_mail=post.user.email
+                sending_mail(recipient_mail,content_text)
+
+            else:
+                existing_like.delete()
+
+            return redirect('/feed/')
+    else:
+        return redirect('/login/')
 
 def comment_view(request):
     user = check_validation(request)
     if user and request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
-            username_of_post=form.cleaned_data.get('post')
             post_id = form.cleaned_data.get('post').id
-            print post_id
             comment_text = form.cleaned_data.get('comment_text')
-            comment = CommentModel.objects.create(user=user, post_id=post_id, comment_text=comment_text)
-            comment.save()
-            post=PostModel.objects.get(id=post_id)
-            recipient_mail = post.user.email
-            recipient_name=comment.user.username
-            sending_mail(recipient_mail,content_text=recipient_name+" has commented on your post")
-            return redirect('/feed/')
+            comment_text_words=TextBlob(comment_text).words
+            for word in comment_text_words:
+                if word in INAPPROPRIATE_WORDS:
+                    error_message="You are trying to add an inapproprite comment!!"
+                    return render(request,'error.html',{'error_message':error_message})
+                else:
+                    comment = CommentModel.objects.create(user=user, post_id=post_id, comment_text=comment_text)
+                    comment.save()
+                    post=PostModel.objects.get(id=post_id)
+                    recipient_mail = post.user.email
+                    recipient_name=comment.user.username
+                    sending_mail(recipient_mail,content_text=recipient_name+" has commented on your post")
+                    return redirect('/feed/')
         else:
             return redirect('/feed/')
     else:

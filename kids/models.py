@@ -44,7 +44,7 @@ class PostModel(models.Model):
 		return len(LikeModel.objects.all().filter(post=self))
 	@property
 	def comments(self):
-		return CommentModel.objects.all().filter(post=self)
+		return CommentModel.objects.all().filter(post=self).order_by('-created_on')
 
 
 

@@ -19,10 +19,12 @@ class PostForm(forms.ModelForm):
 		model=PostModel
 		fields=['image','caption']
 
-# class LikeForm(forms.ModelForm):
-# 	class Meta:
-# 		model=LikeModel()
-# 		fields=
+class LikeForm(forms.ModelForm):
+	class Meta:
+		model=LikeModel
+		fields=['post']
+
+
 class CommentForm(forms.ModelForm):
 
     class Meta:

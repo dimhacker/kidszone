@@ -15,12 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from kids.views import signup_view,login_view,post_view,feed_view,comment_view,logout_view
+from kids.views import signup_view,login_view,post_view,feed_view,comment_view,logout_view,like_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url('comment',comment_view),
-    # url('like',like_view),
+    url('comment/',comment_view),
+    url(r'^like/$',like_view),
     url(r'^logout/$',logout_view,name='logout'),
     url(r'feed/$',feed_view),
     url(r'^post/$',post_view),

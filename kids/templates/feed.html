@@ -22,17 +22,22 @@
     <img style="display:inline-block; width:350px; height:300px;"
              src="{{ post.image_url }}" alt="image not available"/><br>
         <span  style="display:inline-block;">{{ post.caption }}</span><br/><br/>
+            <div style="display:inline-block">
+                <p>{{ post.number_of_likes }} likes this</p>
 
-{#    <form method="POST" action="/like/">#}
-{#        {% csrf_token %}#}
-{#    <input type="hidden" name="post" value={{ post.id}} }}>#}
-{#        {% if post.has_liked %}#}
-{#            <input type="submit" value="unlike">#}
-{#            {% else  %}#}
-{#            <input type="submit" value="like">#}
-{#        {% endif %}#}
-{#    <p >{{ post.number_of_likes}} liked this</p>#}
-<br>
+        </div>
+
+        <div style="display:inline-block">
+            <form method="POST" action="/like/">
+              {% csrf_token %}
+              <input type="hidden" name="post" value="{{ post.id }}" />
+                {% if post.has_liked %}
+                <input type="submit" class="btn btn-default" value="Unlike">
+                {% else %}
+                <input type="submit" class="btn btn-default" value="Like">
+                {% endif %}
+            </form>
+        </div>
             <div>
             <form method="POST" action="/comment/">
                 {% csrf_token %}
@@ -42,7 +47,7 @@
                 <input type="submit" class="btn-default btn" value="Comment">
             </form>
         </div>
-            {% for comment in post.comments.filter(since=since).order_by('-id')[:10][::-1] %}
+            {% for comment in post.comments %}
                 <p><b>{{ comment.user.username }} [{{ comment.created_on }}]:</b> {{ comment.comment_text }}</p>
                 <br>
             {% endfor %}

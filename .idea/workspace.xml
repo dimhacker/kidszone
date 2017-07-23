@@ -1,32 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="22d1f665-53ba-465f-9d08-839d2aa6f883" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/media/user_images/Benefits-Of-Drinking-Water-On-An-Empty-Stomach-1.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/media/user_images/IMG_20160410_120420145_HDR.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/media/user_images/IMG_20160410_120420145_HDR_Pzr3tZU.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/media/user_images/IMG_20160410_120515202.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/media/user_images/IMG_20160410_120515202_Ch2Y5Xd.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/media/user_images/IMG_20160628_054423828.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/media/user_images/IMG_20160628_071921573.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/media/user_images/IMG_20160628_071921573_P9dSLpA.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/media/user_images/IMG_20160628_071921573_X3eZB3G.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/media/user_images/IMG_20160628_121903108.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/media/user_images/SI_20160608_203640.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/media/user_images/SI_20160608_203640_XmOWbfQ.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/media/user_images/o-NUDITY-facebook.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/user_images/IMG_20160410_120420145_HDR.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/user_images/IMG_20160410_120420145_HDR_bzAC7HL.jpg" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kids/forms.py" afterPath="$PROJECT_DIR$/kids/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kids/models.py" afterPath="$PROJECT_DIR$/kids/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kids/templates/feed.html" afterPath="$PROJECT_DIR$/kids/templates/feed.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kids/templates/post.html" afterPath="$PROJECT_DIR$/kids/templates/post.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kids/views.py" afterPath="$PROJECT_DIR$/kids/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/recent/settings.py" afterPath="$PROJECT_DIR$/recent/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/recent/urls.py" afterPath="$PROJECT_DIR$/recent/urls.py" />
-    </list>
+    <list default="true" id="22d1f665-53ba-465f-9d08-839d2aa6f883" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -530,8 +505,8 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33387887" sideWeight="0.4969743" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26096824" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33387887" sideWeight="0.4969743" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26096824" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />

@@ -15,6 +15,9 @@ from django.utils import timezone
 from recent.settings import BASE_DIR
 from textblob import TextBlob
 from imgurpython import ImgurClient
+import ctypes  # An included library with Python install.
+
+
 INAPPROPRIATE_WORDS=['arse','arsehole','ass','asshole','badass','bastard','beaver','bitch','bollock','bollocks','boner','bugger','bullshit','bum','cock','crap','creampie','cunt','dick','dickhead','dyke','fag','faggot','fart','fatass',
 'fuck','fucked','fucker','fucking','holy shit','jackass','jerk off','kick ass','kick-ass','kike','kikes','nigga','nigger','piss',
 'pissed','pizza nigger','shit','shittier','shittiest','shitty','son of a bitch','sons of bitches','STFU','suck','tit','trap','twat','wan']
@@ -101,6 +104,7 @@ def post_view(request):
                             error_message="You are trying to post an inappropriate photo!!"
                             return render(request,"error.html",{'error_message':error_message})
                         else:
+                            ctypes.windll.user32.MessageBoxW(0, u"Successfully posted!", u"success", 0)
                             return redirect('/feed/')
         else:
             form = PostForm()
@@ -108,6 +112,11 @@ def post_view(request):
         return render(request, "post.html", {'form': form})
     else:
         return redirect('login')
+
+
+def posts_of_particular_user(request,user_name):
+    posts=PostModel.objects.all().filter(user__username=user_name)
+    return render(request,'postsofuser.html',{'posts':posts,'user_name':user_name})
 
 
 def feed_view(request):
@@ -173,8 +182,6 @@ def comment_view(request):
             return redirect('/feed/')
     else:
         return redirect('/login/')
-
-
 
 def check_validation(request):
     if request.COOKIES.get('session_token'):

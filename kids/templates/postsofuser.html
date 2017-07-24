@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a href ="/post/">
+<input type="button" value="Create Post">
+</a>
+<a href={% url 'logout' %}>
+    <input type="button" value="LOGOUT" >
+</a>
+<h1>{{ user_name }}</h1>
+{% for post in posts %}
+{#<h2>Posted By:{{post.user.username}}</h2>#}
+<h3>{{post.user.created_on}}</h3>
+    <img style="display:inline-block; width:350px; height:300px;"
+             src="{{ post.image_url }}" alt="image not available"/><br>
+        <span  style="display:inline-block;">{{ post.caption }}</span><br/><br/>
+            <div style="display:inline-block">
+                <p>{{ post.number_of_likes }} likes this</p>
+
+        </div>
+
+        <div style="display:inline-block">
+            <form method="POST" action="/like/">
+              {% csrf_token %}
+              <input type="hidden" name="post" value="{{ post.id }}" />
+                {% if post.has_liked %}
+                <input type="submit" class="btn btn-default" value="Unlike">
+                {% else %}
+                <input type="submit" class="btn btn-default" value="Like">
+                {% endif %}
+            </form>
+        </div>
+            <div>
+            <form method="POST" action="/comment/">
+                {% csrf_token %}
+                <input type="hidden" name="post" value="{{ post.id }}" />
+                <input type="text" name="comment_text" id="comment_text" placeholder="Make a comment.." value="{{ comment_text }}">
+                {{ comment_text }}
+                <input type="submit" class="btn-default btn" value="Comment">
+            </form>
+        </div>
+            {% for comment in post.comments %}
+                <p><b>{{ comment.user.username }} [{{ comment.created_on }}]:</b> {{ comment.comment_text }}</p>
+                <br>
+            {% endfor %}
+        </div>
+
+
+
+    </form>
+
+{% endfor %}
+
+
+</body>
+</html>

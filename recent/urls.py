@@ -27,6 +27,6 @@ urlpatterns = [
     url(r'^post/$',post_view),
     url(r'^login/$',login_view,name='login'),
 
-    url(r'^$',signup_view),
+    url(r'',signup_view),
     
 ]

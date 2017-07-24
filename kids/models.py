@@ -2,19 +2,22 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.core.validators import RegexValidator
 
 import uuid
 
 # Create your models here.
 class User(models.Model):
-
+	alphanumeric = RegexValidator(r'^[0-9a-zA-Z]+$', 'Only alphanumeric characters are allowed.')
+	alphabets=RegexValidator(r'^[a-zA-Z]{3}$','Only alphabets')
 	email = models.EmailField(default=None)
 	parentmail = models.EmailField(default=None)
-	name = models.CharField(max_length=120)
-	username = models.CharField(max_length=120)
+	name = models.CharField(max_length=120,validators=[alphabets])
+	username = models.CharField(max_length=120,unique=True,validators=[alphanumeric])   
 	password = models.CharField(max_length=40)
 	created_on = models.DateTimeField(auto_now_add=True)
 	updated_on = models.DateTimeField(auto_now=True)
+
 	def __unicode__(self):
 
 		return self.username

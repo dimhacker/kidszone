@@ -2,18 +2,17 @@
 from __future__ import unicode_literals
 from django.contrib.auth.hashers import make_password, check_password
 import sendgrid
-from keys import SENDGRID_API_KEY,CLARIFAI_API_KEY
-from sendgrid.helpers.mail import *
+from keys import SENDGRID_API_KEY,CLARIFAI_API_KEY #Clarifai api stores the image uploaded by the user on cloud and provides us the url of image
+from sendgrid.helpers.mail import *                    #sendgrid api helps in sending mail to the provided email id
 from clarifai.rest import ClarifaiApp
 
-from django.shortcuts import render, redirect,get_list_or_404,get_object_or_404
+from django.shortcuts import render, redirect,Http404
 from forms import SignupForm, LoginForm, PostForm ,LikeForm, CommentForm
-import uuid
 from models import User, SessionToken, PostModel, LikeModel,CommentModel
 from datetime import timedelta
 from django.utils import timezone
 from recent.settings import BASE_DIR
-from textblob import TextBlob
+from textblob import TextBlob           #Textblob is used for text processing
 from imgurpython import ImgurClient
 import ctypes  # An included library with Python install.
 
@@ -23,7 +22,7 @@ INAPPROPRIATE_WORDS=['arse','arsehole','ass','asshole','badass','bastard','beave
 'pissed','pizza nigger','shit','shittier','shittiest','shitty','son of a bitch','sons of bitches','STFU','suck','tit','trap','twat','wan']
 # Create your views here.
 
-def signup_view(request):
+def signup_view(request):               #view for signup.html and all other invalid urls
     if request.method == "POST":
         form = SignupForm(request.POST)
         if form.is_valid():
@@ -32,8 +31,7 @@ def signup_view(request):
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
             parentmail = form.cleaned_data.get('parentmail')
-            user = User(name=name, username=username, email=email, password=make_password(password),
-                        parentmail=parentmail)
+            user = User(name=name, username=username, email=email, password=make_password(password),parentmail=parentmail)  #make_password converts a string into hashcode with is one way encryption
             user.save()
             recipient_mail=email
             content_text="Hey "+username+"!! Welcome to the Kids Zone, a social networking site for kids.You have successfully signed up!!"
@@ -49,7 +47,7 @@ def signup_view(request):
     return render(request, 'signup.html', {'form': form})
 
 
-def login_view(request):
+def login_view(request):                    #view for login.html
     response_data = {}
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -59,11 +57,11 @@ def login_view(request):
             user = User.objects.filter(username=username).first()
             if user:
                 if check_password(password, user.password):
-                    token = SessionToken(user=user)
+                    token = SessionToken(user=user)      #generating session for logged in user
                     token.create_token()
                     token.save()
                     response = redirect('feed/')
-                    response.set_cookie(key='session_token', value=token.session_token)
+                    response.set_cookie(key='session_token', value=token.session_token)   #storing generated session as cookie
                     return response
                 else:
                     response_data['message'] = 'Incorrect Password! Please try again!'
@@ -75,7 +73,7 @@ def login_view(request):
     return render(request, 'login.html', response_data)
 
 
-def post_view(request):
+def post_view(request):                 #view for post.html
     user = check_validation(request)
     if user:
         if request.method == "POST":
@@ -114,12 +112,22 @@ def post_view(request):
         return redirect('login')
 
 
-def posts_of_particular_user(request,user_name):
-    posts=PostModel.objects.all().filter(user__username=user_name)
-    return render(request,'postsofuser.html',{'posts':posts,'user_name':user_name})
+def posts_of_particular_user(request,user_name):    #view displaying the posts by a particular user
+    USER=check_validation(request)
+    if USER:
+        user=User.objects.all().filter(username=user_name).first()
+        if user:
+                posts = PostModel.objects.all().filter(user__username=user_name)
+                return render(request, 'postsofuser.html', {'posts': posts, 'user_name': user_name})
+        else:
+            raise Http404
+
+    else:
+        return  redirect('/login/')
 
 
-def feed_view(request):
+
+def feed_view(request):                 #view for feed.html
     user=check_validation(request)
     if user:
         posts = PostModel.objects.all().order_by('-created_on')
@@ -169,7 +177,7 @@ def comment_view(request):
             for word in comment_text_words:
                 if word in INAPPROPRIATE_WORDS:
                     error_message="You are trying to add an inapproprite comment!!"
-                    return render(request,'error.html',{'error_message':error_message})
+                    return render(request,'error.html',{'error_message':error_message})   #redirecting to page displaying error if user tries to post an inapproprite comment
                 else:
                     comment = CommentModel.objects.create(user=user, post_id=post_id, comment_text=comment_text)
                     comment.save()
@@ -183,7 +191,7 @@ def comment_view(request):
     else:
         return redirect('/login/')
 
-def check_validation(request):
+def check_validation(request):    #function to check the validation of session of user on every httprequest
     if request.COOKIES.get('session_token'):
         session = SessionToken.objects.filter(session_token=request.COOKIES.get('session_token')).first()
         if session:
@@ -192,7 +200,7 @@ def check_validation(request):
                 return session.user
     else:
         return None
-def cancel_validation(request):
+def cancel_validation(request):    #function to cancel the validation of session token generated on logging out
     if request.COOKIES.get('session_token'):
         session = SessionToken.objects.filter(session_token=request.COOKIES.get('session_token')).first()
         if session:
@@ -201,7 +209,7 @@ def cancel_validation(request):
             pass
 
 
-def sending_mail(recipient_mail,content_text):
+def sending_mail(recipient_mail,content_text):     #function to send mail using sendgrid api
     sg = sendgrid.SendGridAPIClient(apikey=SENDGRID_API_KEY)
     from_email = Email("kidssphere@gmail.com")
     to_email = Email(recipient_mail)

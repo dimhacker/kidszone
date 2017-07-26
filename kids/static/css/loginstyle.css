@@ -1,7 +1,8 @@
 /* login.css*/
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
-h1{
+#error_msg{
   color: red;
+  font-size: 30px;
 }
 .login-page {
   width: 360px;

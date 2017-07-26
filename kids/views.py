@@ -5,7 +5,7 @@ import sendgrid
 from keys import SENDGRID_API_KEY,CLARIFAI_API_KEY #Clarifai api stores the image uploaded by the user on cloud and provides us the url of image
 from sendgrid.helpers.mail import *                    #sendgrid api helps in sending mail to the provided email id
 from clarifai.rest import ClarifaiApp
-
+from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect,Http404
 from forms import SignupForm, LoginForm, PostForm ,LikeForm, CommentForm
 from models import User, SessionToken, PostModel, LikeModel,CommentModel
@@ -42,6 +42,9 @@ def signup_view(request):               #view for signup.html and all other inva
             response = redirect('/feed/')
             response.set_cookie(key='session_token', value=token.session_token)
             return response
+
+
+
     else:
         form = SignupForm()
     return render(request, 'signup.html', {'form': form})
@@ -51,6 +54,9 @@ def login_view(request):                    #view for login.html
     response_data = {}
     if request.method == "POST":
         form = LoginForm(request.POST)
+        for field in form:
+            print field.errors
+
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
@@ -60,12 +66,13 @@ def login_view(request):                    #view for login.html
                     token = SessionToken(user=user)      #generating session for logged in user
                     token.create_token()
                     token.save()
-                    response = redirect('feed/')
+                    response = redirect('/feed/')
                     response.set_cookie(key='session_token', value=token.session_token)   #storing generated session as cookie
                     return response
                 else:
                     response_data['message'] = 'Incorrect Password! Please try again!'
-
+            else:
+                response_data['message']="Invalid User! Please try again!"
     elif request.method == 'GET':
         form = LoginForm()
 
@@ -135,6 +142,7 @@ def feed_view(request):                 #view for feed.html
             existing_like = LikeModel.objects.filter(post_id=post.id, user=user).first()
             if existing_like:
                 post.has_liked = True
+
         return render(request, "feed.html", {'posts': posts})
     else:
         return redirect('login')
@@ -191,6 +199,14 @@ def comment_view(request):
     else:
         return redirect('/login/')
 
+# def upvote_comment(request):
+#     user=check_validation(request)
+#     if user and request=="POST":
+#         form=CommentForm(re)
+
+
+
+
 def check_validation(request):    #function to check the validation of session of user on every httprequest
     if request.COOKIES.get('session_token'):
         session = SessionToken.objects.filter(session_token=request.COOKIES.get('session_token')).first()
@@ -211,7 +227,7 @@ def cancel_validation(request):    #function to cancel the validation of session
 
 def sending_mail(recipient_mail,content_text):     #function to send mail using sendgrid api
     sg = sendgrid.SendGridAPIClient(apikey=SENDGRID_API_KEY)
-    from_email = Email("kidssphere@gmail.com")
+    from_email = Email("kidszone@gmail.com")
     to_email = Email(recipient_mail)
     subject = "Notification from Kids Zone, a social networking site for kids!!"
     content = Content("text/plain", content_text)

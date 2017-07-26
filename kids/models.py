@@ -8,13 +8,14 @@ import uuid
 
 # Create your models here.
 class User(models.Model):
-	alphanumeric = RegexValidator(r'^[0-9a-zA-Z]+$', 'Only alphanumeric characters are allowed.')
-	alphabets=RegexValidator(r'^[a-zA-Z]{3}$','Only alphabets')
+	alphabets = RegexValidator(r'[a-zA-Z]{3,40}$')
+	alphanumeric=RegexValidator(r'^[a-zA-Z0-9_-]{3,40}$')
+	minlength_password=RegexValidator(r'.{4,40}')
 	email = models.EmailField(default=None)
 	parentmail = models.EmailField(default=None)
-	name = models.CharField(max_length=120,validators=[alphabets])
-	username = models.CharField(max_length=120,unique=True,validators=[alphanumeric])   
-	password = models.CharField(max_length=40)
+	name = models.CharField(max_length=40,validators=[alphabets])
+	username = models.CharField(max_length=40,validators=[alphanumeric])
+	password = models.CharField(max_length=40,validators=[minlength_password])
 	created_on = models.DateTimeField(auto_now_add=True)
 	updated_on = models.DateTimeField(auto_now=True)
 
@@ -49,8 +50,6 @@ class PostModel(models.Model):
 	def comments(self):
 		return CommentModel.objects.all().filter(post=self).order_by('-created_on')
 
-
-
 	def __unicode__(self):
 		return self.user.username
 
@@ -67,4 +66,5 @@ class CommentModel(models.Model):
 	comment_text = models.CharField(max_length=200)
 	created_on = models.DateTimeField(auto_now_add=True)
 	updated_on = models.DateTimeField(auto_now=True)
+#	upvote=models.BooleanField(default=True)
 

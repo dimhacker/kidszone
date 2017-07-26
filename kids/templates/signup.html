@@ -58,11 +58,11 @@ margin: 0px 0px 0px 0px;
 <h1>Kids Zone</h1>
 <form method="post">
 {% csrf_token %}
-<input type="text" placeholder="Full Name" name="name" value={{name}}><br>
-<input type="text" placeholder="Username" name="username" value={{username}} ><br>
-<input type="email" placeholder="Email" name="email" value={{email}}><br>
-<input type="email" placeholder="Parent-Email" name="parentmail" value={{pamail}}><br>
-<input type="password" placeholder="Password" name="password" value={{password}} ><br>
+<input type="text" pattern="^[a-zA-Z]{3,40}$" placeholder="Full Name" name="name" required title="Minimum 3 and maximum 40 alphabets" value={{name}} ><br>
+<input type="text" pattern="[a-zA-Z0-9-_]{3,40}" placeholder="Username" name="username" required title="Alphanumeric characters or underscore only(minimum 3 characters)" value={{username}} ><br>
+<input type="email" placeholder="Email" name="email" required value={{email}}><br>
+<input type="email" placeholder="Parent-Email" name="parentmail" required value={{pamail}}><br>
+<input type="password" pattern=".{4,40}" placeholder="Password" name="password" required title="Minimum 4 characters" value={{password}} ><br>
 <input  id ="submit" type="submit" value="Sign Up"><br>
 <a href={% url 'login' %}>Login</a>
     </form>

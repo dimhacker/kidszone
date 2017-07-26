@@ -19,13 +19,15 @@ from kids.views import signup_view,login_view,post_view,feed_view,comment_view,l
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+
     url(r'^login/feed/(?P<user_name>[a-zA-Z]+)/$',posts_of_particular_user),
     url('comment/',comment_view),
-    url(r'^like/$',like_view),
+    url(r'like/$',like_view),
     url(r'^logout/$',logout_view,name='logout'),
-    url(r'feed/$',feed_view),
+    url(r'^feed/$',feed_view),
     url(r'^post/$',post_view),
-    url(r'^login/$',login_view,name='login'),
+    url(r'^login/$', login_view, name='login'),
+
 
     url(r'',signup_view),
     

@@ -89,21 +89,20 @@
 
         </div>
             {% for comment in post.comments %}
-                <form method="post" action="/upvote/">
-                {% csrf_token %}
-                <input type="hidden" name="comment" value="{{ comment.id }}">
-                <p><b>{{ comment.user.username }} [{{ comment.created_on }}]:</b> {{ comment.comment_text }}</p>
+                 <p><b>{{ comment.user.username }}[{{ comment.created_on }}]:</b> {{ comment.comment_text }}</p>
                  <p >
                     {{ comment.number_of_likes }}
                     </p>
-                {% if comment.has_upvoted %}
-
+                <form method="post" action="/upvote/">
+                {% csrf_token %}
+                <input type="hidden" name="comment" value="{{ comment.id }}">
+                    {% if comment.has_upvoted %}
                 <input type="submit" value="Downvote" >
                 {% else %}
                 <input type="submit" value="Upvote">
                 {% endif %}
                 <br>
-
+                </form>
             {% endfor %}
 {% endfor %}
         </div>

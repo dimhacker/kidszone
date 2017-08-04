@@ -139,19 +139,19 @@ def feed_view(request):                 #view for feed.html
     user=check_validation(request)
     if user:
         posts = PostModel.objects.all().order_by('-created_on')
-      #  paginator=Paginator(posts,4)
+        paginator=Paginator(posts,4)
         for post in posts:
             existing_like = LikeModel.objects.filter(post_id=post.id, user=user).first()
             if existing_like:
                 post.has_liked = True
-
-            comments=CommentModel.objects.filter(post_id=post.id)
-            for comment in comments:
+            for comment in post.comments:
                 existing_upvote=CommentLikeModel.objects.filter(comment_id=comment.id,user=user).first()
                 if existing_upvote:
                     comment.has_upvoted=True
+                else:
+                    comment.has_upvoted=False
 
-        return render(request, "feed.html", {'posts': posts})
+        return render(request, "feed.html", {'posts': posts })
     else:
         return redirect('/login/')
 
@@ -216,8 +216,12 @@ def upvote_comment(request):
                 existing_like = CommentLikeModel.objects.filter(comment_id=comment_id,user=user).first()
                 if not existing_like:
                      CommentLikeModel.objects.create(comment_id=comment_id, user=user)
+                     comment=CommentModel.objects.filter(id=comment_id).first()
+                     print  comment.comment_text + "-comment upvoted"
                 else:
                     existing_like.delete()
+                    comment = CommentModel.objects.filter(id=comment_id).first()
+                    print  comment.comment_text + "-comment downvoted"
 
         return redirect('/feed/')
     else:

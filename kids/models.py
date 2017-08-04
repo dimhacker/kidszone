@@ -58,13 +58,26 @@ class LikeModel(models.Model):
 	post=models.ForeignKey(PostModel)
 	created_on = models.DateTimeField(auto_now_add=True)
 	updated_on = models.DateTimeField(auto_now=True)
-	has_liked=models.BooleanField(default=False)
 
 class CommentModel(models.Model):
-	user = models.ForeignKey(User)
-	post = models.ForeignKey(PostModel)
-	comment_text = models.CharField(max_length=200)
-	created_on = models.DateTimeField(auto_now_add=True)
-	updated_on = models.DateTimeField(auto_now=True)
-#	upvote=models.BooleanField(default=True)
+    user = models.ForeignKey(User)
+    post = models.ForeignKey(PostModel)
+    comment_text = models.CharField(max_length=200)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    has_upvoted = False
+
+    @property
+    def number_of_likes(self):
+        return len(CommentLikeModel.objects.filter(comment=self))
+
+class CommentLikeModel(models.Model):
+    user = models.ForeignKey(User)
+    post = models.ForeignKey(PostModel)
+    comment = models.ForeignKey(CommentModel,null=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on=models.DateTimeField(auto_now=True)
+
+
+
 

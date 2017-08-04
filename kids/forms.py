@@ -1,5 +1,5 @@
 from django import forms
-from models import User,PostModel,LikeModel,CommentModel
+from models import User,PostModel,LikeModel,CommentModel,CommentLikeModel
 
 
 class SignupForm(forms.ModelForm):
@@ -30,4 +30,9 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = CommentModel
         fields = ['comment_text', 'post']
+
+class CommentLikeForm(forms.ModelForm):
+	class Meta:
+		model = CommentLikeModel
+		fields = ['comment']
 

@@ -7,13 +7,14 @@ from sendgrid.helpers.mail import *                    #sendgrid api helps in se
 from clarifai.rest import ClarifaiApp
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect,Http404
-from forms import SignupForm, LoginForm, PostForm ,LikeForm, CommentForm
-from models import User, SessionToken, PostModel, LikeModel,CommentModel
+from forms import SignupForm, LoginForm, PostForm ,LikeForm, CommentForm,CommentLikeForm
+from models import User, SessionToken, PostModel, LikeModel,CommentModel,CommentLikeModel
 from datetime import timedelta
 from django.utils import timezone
 from recent.settings import BASE_DIR
 from textblob import TextBlob           #Textblob is used for text processing
 from imgurpython import ImgurClient
+from django.core.paginator import Paginator
 import ctypes  # An included library with Python install.
 
 
@@ -99,8 +100,8 @@ def post_view(request):                 #view for post.html
                 response = model.predict_by_url(url=post.image_url)
                 concepts_value=response['outputs'][0]['data']['concepts']
                 for i in concepts_value:
-                    if i['name']=='nsfw':
-                        nudity_level=i['value']
+                    if i['name'] == ' nsfw ':
+                        nudity_level = i['value']
 
                         if nudity_level>=0.85:
                             print response['outputs'][0]['data']['concepts']
@@ -138,14 +139,21 @@ def feed_view(request):                 #view for feed.html
     user=check_validation(request)
     if user:
         posts = PostModel.objects.all().order_by('-created_on')
+      #  paginator=Paginator(posts,4)
         for post in posts:
             existing_like = LikeModel.objects.filter(post_id=post.id, user=user).first()
             if existing_like:
                 post.has_liked = True
 
+            comments=CommentModel.objects.filter(post_id=post.id)
+            for comment in comments:
+                existing_upvote=CommentLikeModel.objects.filter(comment_id=comment.id,user=user).first()
+                if existing_upvote:
+                    comment.has_upvoted=True
+
         return render(request, "feed.html", {'posts': posts})
     else:
-        return redirect('login')
+        return redirect('/login/')
 
 def logout_view(request):
         cancel_validation(request)
@@ -185,7 +193,7 @@ def comment_view(request):
             for word in comment_text_words:
                 if word in INAPPROPRIATE_WORDS:
                     error_message="You are trying to add an inapproprite comment!!"
-                    return render(request,'error.html',{'error_message':error_message})   #redirecting to page displaying error if user tries to post an inapproprite comment
+                    return render(request, 'error.html', {'error_message':error_message})   #redirecting to page displaying error if user tries to post an inapproprite comment
                 else:
                     comment = CommentModel.objects.create(user=user, post_id=post_id, comment_text=comment_text)
                     comment.save()
@@ -199,10 +207,23 @@ def comment_view(request):
     else:
         return redirect('/login/')
 
-# def upvote_comment(request):
-#     user=check_validation(request)
-#     if user and request=="POST":
-#         form=CommentForm(re)
+def upvote_comment(request):
+    user=check_validation(request)
+    if user and request.method=="POST":
+        form=CommentLikeForm(request.POST)
+        if form.is_valid():
+                comment_id = form.cleaned_data.get('comment').id
+                existing_like = CommentLikeModel.objects.filter(comment_id=comment_id,user=user).first()
+                if not existing_like:
+                     CommentLikeModel.objects.create(comment_id=comment_id, user=user)
+                else:
+                    existing_like.delete()
+
+        return redirect('/feed/')
+    else:
+        return redirect('/login/')
+
+
 
 
 

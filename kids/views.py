@@ -14,7 +14,7 @@ from django.utils import timezone
 from recent.settings import BASE_DIR
 from textblob import TextBlob           #Textblob is used for text processing
 from imgurpython import ImgurClient
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 import ctypes  # An included library with Python install.
 
 
@@ -81,7 +81,7 @@ def login_view(request):                    #view for login.html
     return render(request, 'login.html', response_data)
 
 
-def post_view(request):                 #view for post.html
+def post_view(request):
     user = check_validation(request)
     if user:
         if request.method == "POST":
@@ -100,8 +100,8 @@ def post_view(request):                 #view for post.html
                 response = model.predict_by_url(url=post.image_url)
                 concepts_value=response['outputs'][0]['data']['concepts']
                 for i in concepts_value:
-                    if i['name'] == ' nsfw ':
-                        nudity_level = i['value']
+                    if i['name']=='nsfw':
+                        nudity_level=i['value']
 
                         if nudity_level>=0.85:
                             print response['outputs'][0]['data']['concepts']
@@ -110,7 +110,6 @@ def post_view(request):                 #view for post.html
                             error_message="You are trying to post an inappropriate photo!!"
                             return render(request,"error.html",{'error_message':error_message})
                         else:
-                            ctypes.windll.user32.MessageBoxW(0, u"Successfully posted!", u"success", 0)
                             return redirect('/feed/')
         else:
             form = PostForm()
@@ -137,9 +136,18 @@ def posts_of_particular_user(request,user_name):    #view displaying the posts b
 
 def feed_view(request):                 #view for feed.html
     user=check_validation(request)
+    print "feed pages"
     if user:
-        posts = PostModel.objects.all().order_by('-created_on')
-        paginator=Paginator(posts,4)
+        all_posts = PostModel.objects.all().order_by('-created_on')
+        page = request.GET.get('page', 1)
+        paginator = Paginator(all_posts,10)
+        try:
+           posts= paginator.page(page)
+        except PageNotAnInteger:
+           posts = paginator.page(1)
+        except EmptyPage:
+           posts = paginator.page(paginator.num_pages)
+
         for post in posts:
             existing_like = LikeModel.objects.filter(post_id=post.id, user=user).first()
             if existing_like:
@@ -150,6 +158,7 @@ def feed_view(request):                 #view for feed.html
                     comment.has_upvoted=True
                 else:
                     comment.has_upvoted=False
+
 
         return render(request, "feed.html", {'posts': posts })
     else:

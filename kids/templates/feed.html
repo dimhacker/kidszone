@@ -24,21 +24,22 @@ Feed | Kids Zone
               {% csrf_token %}
               <input type="hidden" name="post" value="{{ post.id }}" />
                 {% if post.has_liked %}
-                <input type="submit" class="btn btn-default" value="Unlike">
+               <button type="submit" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-down"></i>  Unlike</button>
+
                 {% else %}
-                <input type="submit" class="btn btn-default" value="Like">
+                  <button type="submit" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button>
                 {% endif %}
             </form>
         </div>
             <div>
-            <form method="POST" action="/comment/">
+           <form method="POST" action="/comment/">
                 {% csrf_token %}
                 <input type="hidden" name="post" value="{{ post.id }}" />
-                <input type="text" name="comment_text" id="comment_text" placeholder="Make a comment.." value="{{ comment_text }}">
-                {{ comment_text }}
-                <input type="submit" class="btn-default btn" value="Comment">
-            </form>
 
+                <input type="text" name="comment_text" id="comment_text" class="w3-container w3-padding" placeholder="Make a comment.." value="{{ comment_text }}">
+                {{ comment_text }}
+<button type="submit" id="comment_button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button>
+            </form>
         </div>
             {% for comment in post.comments %}
                  <p><b>{{ comment.user.username }}[{{ comment.created_on }}]:</b> {{ comment.comment_text }}</p>

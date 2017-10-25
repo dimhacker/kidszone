@@ -1,10 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+{% load static %}
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/feedstyle.css' %}">
+	<title>{% block title %}
+    {% endblock %}</title>
 </head>
 <body>
-$END$
+
+    <div id="header">
+
+    </div>
+
+        <div class="dropdown">
+            <i class=" fa fa-user" id="avatar" ></i>
+  <div class="dropdown-content">
+      <a href="/profile/">Add profile picture</a>
+      <a href="/post/">Create Post</a>
+    <a href="/feed/my_posts/">My Posts</a>
+    <a href={% url 'logout' %}>Logout</a>
+  </div>
+        </div>
+
+
+
+    <div class="w3-col m3" id="left_side">
+      <!-- Profile -->
+      <div class="w3-card-2 w3-round w3-white">
+        <div class="w3-container">
+
+
+        <ul>
+            <li>Friends</li>
+            <li>Settings</li>
+            <li>Help</li>
+        </ul>
+    </div>
+      </div>
+    </div>
+        <div class="w3-row-padding">
+        <div class="w3-col m12">
+          <div class="w3-card-2 w3-round w3-white" id ="top_row">
+            <div class="w3-container w3-padding">
+              <p contenteditable="true" class="w3-border w3-padding">Status: Feeling Blue</p>
+              <button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Post</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div id="content-block">
+        {% block feed %}
+        {% endblock %}
+
+    </div>
 </body>
 </html>

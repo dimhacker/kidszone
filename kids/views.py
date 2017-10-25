@@ -190,6 +190,18 @@ def like_view(request):
             return redirect('/feed/')
     else:
         return redirect('/login/')
+def my_posts(request):    #view displaying the posts by a particular user
+    USER=check_validation(request)
+    if USER:
+        user=User.objects.all().filter(username=USER.username).first()
+        if user:
+                posts = PostModel.objects.all().filter(user__username=user.username)
+                return render(request, 'postsofuser.html', {'posts': posts, 'user_name': user.username})
+        else:
+            raise Http404
+
+    else:
+        return  redirect('/login/')
 
 def comment_view(request):
     user = check_validation(request)

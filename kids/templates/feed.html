@@ -1,61 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>feed</title>
-{#    <style>#}
-{#        p{#}
-{#            display: inline;#}
-{#        }#}
-{#    #header{#}
-{#    width: 100%;#}
-{#    height: 139px;#}
-{#    background-color: black;#}
-{#    overflow: hidden;  //code added to prevent scroll#}
-{#}#}
-{##}
-{##}
-{##left_side{#}
-{#    width: 210px;#}
-{#    height: auto;#}
-{#    background-color:#EF3B3A;#}
-{#    overflow:hidden;  //code added to prevent scroll#}
-{#    position:fixed;#}
-{#    font-size: 16px;#}
-{#}#}
-{##content{#}
-{#     height: auto;#}
-{#     padding: 20px;#}
-{#    position: static;#}
-{#     margin-left: 230px;#}
-{#     margin-right: 20px;#}
-{#    padding-bottom: 30px;#}
-{#    overflow: auto;  //code added#}
-{# }#}
-{#    </style>#}
-</head>
-<body>
-
-    <div id="header">
-<a href ="/post/">
-<input type="button" value="Create Post">
-</a>
-<a href={% url 'logout' %}>
-    <input type="button" value="LOGOUT" >
-</a>
-</div>
-
-    <div id="left_side">
-        <ul>
-            <li>Friends</li>
-            <li>Settings</li>
-            <li>Help</li>
-        </ul>
-    </div>
-    {% for post in posts %}
-<div id ='content'>
-
+{% extends 'base.html' %}
+{% block title %}
+Feed | Kids Zone
+{% endblock %}
+{% block feed %}
+{% for post in posts %}
+<div class="w3-card-2 w3-round w3-white" id="post-box">
+            <div id="content"  >
 <h2>Posted By:  <a href="/login/feed/{{ post.user.username}}/" >{{post.user.username}}</a></h2>
-<h3>{{post.user.created_on}}</h3>
+<h3 id="date">{{post.user.created_on}}</h3>
 
     <img style="display:inline-block; width:350px; height:300px;"
              src="{{ post.image_url }}" alt="image not available"/><br>
@@ -104,8 +56,10 @@
                 <br>
                 </form>
             {% endfor %}
+                </div>
+</div>
 {% endfor %}
-    </div>
+
 <div class="pagination">
     <span class="step-links">
         {% if posts.has_previous %}
@@ -122,6 +76,4 @@
     </span>
 </div>
 
-
-</body>
-</html>
+{% endblock %}

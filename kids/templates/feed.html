@@ -2,10 +2,20 @@
 {% block title %}
 Feed | Kids Zone
 {% endblock %}
+{% block left %}
+<h2 align="center" >My Profile</h2>
+ <span><h2><img id="avatar2" alt="Avatar" src="https://s-media-cache-ak0.pinimg.com/originals/f9/77/67/f97767b7a3294695cdf1f14b47f040d4.png"></h2></span>
+
+
+ Status : {{data}}
+{% endblock %}
 {% block status %}
+<form method="post" action="/status-update/">
+    {% csrf_token %}
 <input type="text" class="w3-border w3-padding" placeholder="Status: Feeling Blue" style="margin-top: 15px;
-margin-bottom: 15px; width:390px;">
-              <button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Post</button>
+margin-bottom: 15px; width:390px;" name="status" value="{{status}}">
+              <button type="submit" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Post</button>
+</form>
 {% endblock %}
 {% block feed %}
 {% for post in posts %}

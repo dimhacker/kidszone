@@ -143,7 +143,8 @@ def update_status(request):
 
                 status_text=User.objects.create(user=user,status=status)
                 status_text.save()
-                data=status_text.status
+                data=status
+                print status +"is posted"
 
         return render(request,'feed.html',data)
 

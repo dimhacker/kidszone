@@ -15,6 +15,10 @@
 <body>
 
     <div id="header">
+        <img src="{% static 'navbaaaar1.jpg' %}" style="    height: 69px;
+    position: relative;
+    width: 600px;
+    left: 22px" align="left">
 
     </div>
 
@@ -33,15 +37,18 @@
     <div class="w3-col m3" id="left_side">
       <!-- Profile -->
       <div class="w3-card-2 w3-round w3-white">
-        <div class="w3-container">
+        <div class="w3-container" id="left1">
             <!--<h2 id="avatar1"><img src="{ % static ' default.png' % }"  ></h2>-->
 
 
-        <ul>
-            <li>Friends</li>
-            <li>Settings</li>
-            <li>Help</li>
-        </ul>
+        <!--<ul>-->
+            <!--<li>Friends</li>-->
+            <!--<li>Settings</li>-->
+            <!--<li>Help</li>-->
+        <!--</ul>-->
+            {% block left %}
+
+            {% endblock %}
     </div>
       </div>
     </div>

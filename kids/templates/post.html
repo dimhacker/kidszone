@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Post</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}
+Post | KidsZone
+{% endblock %}
+{% block feed %}
+
+
 <form method="post" enctype="multipart/form-data" >
 {% csrf_token %}
     <input type="file" name="image" value={{image}} accept="image">
@@ -11,5 +12,4 @@
     <input type="submit" value="post">
 </form>
 
-</body>
-</html>
+{% endblock %}

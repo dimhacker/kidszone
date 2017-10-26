@@ -23,6 +23,9 @@
     float:left;
     margin:0px;
 }
+#left1{
+padding-bottom:60px;
+}
 #content{
      height: auto;
 
@@ -62,7 +65,15 @@
     height:100px;
     display:inline;
 }
-
+#avatar2{
+    border: 1px solid black;
+    border-radius:50%;
+    width:140px;
+    height:140px;
+    display:inline;
+    position:relative;
+    left:50px;
+}
 
 #comment_button{
 margin-top:12px;}

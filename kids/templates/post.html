@@ -1,15 +1,35 @@
 {% extends 'base.html' %}
 {% block title %}
-Post | KidsZone
+Create Post | Kids Zone
+{% endblock %}
+
+{% block left %}
+<h2 align="center" >My Profile</h2>
+ <span><h2><img id="avatar2" alt="Avatar" src="https://s-media-cache-ak0.pinimg.com/originals/f9/77/67/f97767b7a3294695cdf1f14b47f040d4.png"></h2></span>
+
+
+ Status : {{data}}
+{% endblock %}
+{% block status %}
+<form method="post" action="/status-update/">
+    {% csrf_token %}
+<input type="text" class="w3-border w3-padding" placeholder="Status: Feeling Blue" style="margin-top: 15px;
+margin-bottom: 15px; width:390px;" name="status" value="{{status}}">
+              <button type="submit" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Post</button>
+</form>
 {% endblock %}
 {% block feed %}
+     <div class="w3-card-2 w3-round w3-white" id="post-box">
+            <div id="content"  >
 
+           <form method="post" enctype="multipart/form-data" >
 
-<form method="post" enctype="multipart/form-data" >
 {% csrf_token %}
-    <input type="file" name="image" value={{image}} accept="image">
-    <input type="text" placeholder="Caption"  name="caption" value="{{caption}}">
-    <input type="submit" value="post">
-</form>
 
+    <input type="file" name="image" value={{image}} id="browse" class="w3-button w3-theme" accept="image" >
+    <input type="text" placeholder="Caption"  class="w3-border w3-padding" name="caption" value="{{caption}}">
+    <button type="submit" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Post</button>
+</form>
+            </div>
+          </div>
 {% endblock %}

@@ -21,9 +21,9 @@ margin-bottom: 15px; width:390px;" name="status" value="{{status}}">
 {% for post in posts %}
 <div class="w3-card-2 w3-round w3-white" id="post-box">
             <div id="content"  >
-                <span><h2><img id="avatar1" alt="Avatar" src="https://s-media-cache-ak0.pinimg.com/originals/f9/77/67/f97767b7a3294695cdf1f14b47f040d4.png"></h2></span>
+                <h2 ><img id="avatar1" alt="Avatar" src="https://s-media-cache-ak0.pinimg.com/originals/f9/77/67/f97767b7a3294695cdf1f14b47f040d4.png"></h2>
 
-                    <span><h2 id="user_name">       <a href="/login/feed/{{ post.user.username}}/" >{{post.user.username}}</a></h2></span>
+                    <h2 id="user_name">       <a href="/login/feed/{{ post.user.username}}/" >{{post.user.username}}</a></h2>
 <h3 id="date">{{post.user.created_on}}</h3>
 
     <img style="display:inline-block; width:350px; height:300px;"

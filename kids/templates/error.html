@@ -1,16 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>WARNING</title>
-    <style>
-        h2{
-            color: red;
-        }
-    </style>
-</head>
-<body>
-<h2>{{ error_message }}</h2>
+{% extends 'base.html' %}
+{% block title %}
+Warning | Kids Zone
+{% endblock %}
+{% block left %}
+<h2 align="center" >My Profile</h2>
+ <span><h2><img id="avatar2" alt="Avatar" src="https://s-media-cache-ak0.pinimg.com/originals/f9/77/67/f97767b7a3294695cdf1f14b47f040d4.png"></h2></span>
 
-</body>
-</html>
+
+ Status : {{data}}
+{% endblock %}
+{% block status %}
+<form method="post" action="/status-update/">
+    {% csrf_token %}
+<input type="text" class="w3-border w3-padding" placeholder="Status: Feeling Blue" style="margin-top: 15px;
+margin-bottom: 15px; width:390px;" name="status" value="{{status}}">
+              <button type="submit" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Post</button>
+</form>
+{% endblock %}
+{% block feed %}
+
+      <div class="w3-card-2 w3-round w3-white" id ="post_box">
+            <div class="w3-container w3-padding">
+                <h3>{{error_message}}</h3>
+            </div>
+  </div>
+
+{% endblock %}

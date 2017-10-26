@@ -1,10 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}
+Create Post | Kids Zone
+{% endblock %}
 
-</body>
-</html>
+{% block user-status %}
+{{data}}
+{% endblock %}
+{% block status %}
+<form method="post" action="/status-update/">
+    {% csrf_token %}
+<input type="text" class="w3-border w3-padding" placeholder="Status: Feeling Blue" style="margin-top: 15px;
+margin-bottom: 15px; width:390px;" name="status" value="{{status}}">
+              <button type="submit" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Post</button>
+</form>
+{% endblock %}
+{% block feed %}
+     <div class="w3-card-2 w3-round w3-white" id="post-box">
+            <div id="content"  >
+
+           <form method="post" enctype="multipart/form-data" >
+
+{% csrf_token %}
+
+    <input type="file" name="avatar" value={{avatar}}  class="w3-button w3-theme" accept="image" >
+    <button type="submit" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Post</button>
+</form>
+            </div>
+          </div>
+{% endblock %}

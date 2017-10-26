@@ -8,6 +8,10 @@ class SignupForm(forms.ModelForm):
 		fields=['email','name','username','password','parentmail']
 
 
+class ProfileForm(forms.ModelForm):
+	class Meta:
+		model=User
+		fields=['avatar']
 
 class LoginForm(forms.ModelForm):
 	class Meta:

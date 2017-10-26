@@ -2,12 +2,8 @@
 {% block title %}
 Warning | Kids Zone
 {% endblock %}
-{% block left %}
-<h2 align="center" >My Profile</h2>
- <span><h2><img id="avatar2" alt="Avatar" src="https://s-media-cache-ak0.pinimg.com/originals/f9/77/67/f97767b7a3294695cdf1f14b47f040d4.png"></h2></span>
-
-
- Status : {{data}}
+{% block user-status %}
+ {{data}}
 {% endblock %}
 {% block status %}
 <form method="post" action="/status-update/">
@@ -21,7 +17,7 @@ margin-bottom: 15px; width:390px;" name="status" value="{{status}}">
 
       <div class="w3-card-2 w3-round w3-white" id ="post_box">
             <div class="w3-container w3-padding">
-                <h3>{{error_message}}</h3>
+                <h3>{{error_message}} </h3>
             </div>
   </div>
 

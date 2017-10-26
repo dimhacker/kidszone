@@ -19,6 +19,11 @@ class PostForm(forms.ModelForm):
 		model=PostModel
 		fields=['image','caption']
 
+class StatusForm(forms.ModelForm):
+	class Meta:
+		model=User
+		fields=['status']
+
 class LikeForm(forms.ModelForm):
 	class Meta:
 		model=LikeModel

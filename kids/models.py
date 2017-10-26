@@ -16,6 +16,7 @@ class User(models.Model):
 	name = models.CharField(max_length=40,validators=[alphabets])
 	username = models.CharField(max_length=40,validators=[alphanumeric])
 	password = models.CharField(max_length=40,validators=[minlength_password])
+	status=models.CharField(max_length=40,default="Kids Zone is Cool")
 	created_on = models.DateTimeField(auto_now_add=True)
 	updated_on = models.DateTimeField(auto_now=True)
 

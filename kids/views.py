@@ -7,7 +7,7 @@ from sendgrid.helpers.mail import *                    #sendgrid api helps in se
 from clarifai.rest import ClarifaiApp
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect,Http404
-from forms import SignupForm, LoginForm, PostForm ,LikeForm, CommentForm,CommentLikeForm
+from forms import SignupForm, LoginForm, PostForm ,LikeForm, CommentForm,CommentLikeForm,StatusForm
 from models import User, SessionToken, PostModel, LikeModel,CommentModel,CommentLikeModel
 from datetime import timedelta
 from django.utils import timezone
@@ -132,6 +132,23 @@ def posts_of_particular_user(request,user_name):    #view displaying the posts b
     else:
         return  redirect('/login/')
 
+def update_status(request):
+    user=check_validation(request)
+    data='Kids Zone is Cool'
+    if user:
+        if request.method=="POST":
+            form=StatusForm(request.POST)
+            if form.is_valid():
+                status=form.cleaned_data.get('status')
+
+                status_text=User.objects.create(user=user,status=status)
+                status_text.save()
+                data=status_text.status
+
+        return render(request,'feed.html',data)
+
+    else:
+        return redirect('/login/')
 
 
 def feed_view(request):                 #view for feed.html

@@ -28,4 +28,5 @@ Scope:
 2. The real time web chatting feature can be added to application.
 3. Video upload feature can also be added.
 4. The feature of adding friends can be added.
+5. Scalable database for handling real world data can be used.
 

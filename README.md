@@ -16,18 +16,16 @@ Other features of Kidzone:
 
 Technologies used:
 
-1.Front-End: HTML,CSS,Bootstrap
-
-2.Back-End:Django,Sqlite3
-
-3.API's:1.Sendgrid API for sending mails
+1. Front-End: HTML,CSS,Bootstrap
+2. Back-End:Django,Sqlite3
+3. API's:1.Sendgrid API for sending mails
         2.Clarifai Api for classifying images 
-        
-4.Others: Imgur to store the images on cloud.
+4. Others: Imgur to store the images on cloud.
 
 Scope:
-1.Rest API's can be developed to make the web application loosely coupled.
-2.The real time web chatting feature can be added to application.
+
+1. Rest API's can be developed to make the web application loosely coupled.
+2. The real time web chatting feature can be added to application.
 3. Video upload feature can also be added.
 4. The feature of adding friends can be added.
 

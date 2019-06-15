@@ -17,9 +17,9 @@ Other features of Kidzone:
 Technologies used:
 
 1. Front-End: HTML,CSS,Bootstrap
-2. Back-End:Django,Sqlite3
-3. API's:1.Sendgrid API for sending mails
-        2.Clarifai Api for classifying images 
+2. Back-End: Django,Sqlite3
+3. API's: 1. Sendgrid API for sending mails
+          2. Clarifai Api for classifying images 
 4. Others: Imgur to store the images on cloud.
 
 Scope:

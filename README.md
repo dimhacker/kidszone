@@ -1,5 +1,4 @@
 # kidszone
-social networking site for kids
 
 This is a social networking site developed for kids , keeping in mind that there is plenty of content on other social networking sites not meant for kids.
 
@@ -16,11 +15,11 @@ Other features of Kidzone:
 
 
 Technologies used:
-Front-End: HTML,CSS,Bootstrap
-Back-End:Django,Sqlite3
-API's:1.Sendgrid API for sending mails
-2.Clarifai Api for classifying images 
-Others: Imgur to store the images on cloud.
+1.Front-End: HTML,CSS,Bootstrap
+2.Back-End:Django,Sqlite3
+3.API's:1.Sendgrid API for sending mails
+        2.Clarifai Api for classifying images 
+4.Others: Imgur to store the images on cloud.
 
 Scope:
 1.Rest API's can be developed to make the web application loosely coupled.
